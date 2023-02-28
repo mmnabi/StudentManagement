@@ -1,6 +1,7 @@
 ﻿@inherits LayoutComponentBase
 
 <MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme" />
+<MudDialogProvider />
 
 <MudLayout>
     <MudAppBar Elevation="1">
@@ -10,11 +11,13 @@
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
         <MudDrawerHeader>
-            <MudText Typo="Typo.h5" Class="mt-1">Student Management</MudText>
+            <MudText Typo="Typo.h5" Class="mt-1 text-primary">Student Management</MudText>
         </MudDrawerHeader>
         <NavMenu />
     </MudDrawer>
     <MudMainContent>
-        @Body
+        <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
+            @Body
+        </MudContainer>
     </MudMainContent>
 </MudLayout>

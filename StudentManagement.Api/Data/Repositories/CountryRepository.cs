@@ -21,5 +21,39 @@ namespace StudentManagement.Api.Data.Repositories
         {
             return _appDbContext.Countries.FirstOrDefault(c => c.Id == countryId);
         }
+
+
+
+        public Country AddCountry(Country country)
+        {
+            var addedEntity = _appDbContext.Countries.Add(country);
+            _appDbContext.SaveChanges();
+            return addedEntity.Entity;
+        }
+
+        public Country UpdateCountry(Country country)
+        {
+            var foundCountry = GetCountryById(country.Id);
+
+            if (foundCountry != null)
+            {
+                foundCountry.Name = country.Name;
+
+                _appDbContext.SaveChanges();
+
+                return foundCountry;
+            }
+
+            return null;
+        }
+
+        public void DeleteCountry(int countryId)
+        {
+            var foundCountry = GetCountryById(countryId);
+            if (foundCountry == null) return;
+
+            _appDbContext.Countries.Remove(foundCountry);
+            _appDbContext.SaveChanges();
+        }
     }
 }
