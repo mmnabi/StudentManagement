@@ -1,0 +1,54 @@
+﻿@page "/classform"
+@page "/classform/{Id}"
+@using System.ComponentModel.DataAnnotations
+
+<PageTitle>@Title</PageTitle>
+@if (!Saved)
+{
+    <EditForm Model="@Model" OnValidSubmit="OnValidSubmitAsync">
+        <DataAnnotationsValidator />
+        <MudGrid>
+            <MudItem xs="12" sm="7">
+                <MudCard>
+                    <MudCardHeader>
+                        <MudText Typo="Typo.h5">Country Info</MudText>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudTextField Label="Country Name" HelperText="Max. 255 characters"
+                                  @bind-Value="Model.ClassName" For="@(() => Model.ClassName)" />
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled"
+                               Color="Color.Primary" Class="ml-auto">Save</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+            <MudItem xs="12" sm="5">
+                <MudPaper Class="pa-4 mud-height-full">
+                    <MudLink Href="/classes">Back to List</MudLink>
+                    <MudText Typo="Typo.subtitle2">Validation Summary</MudText>
+                    @if (Saved)
+                    {
+                        <MudText Color="Color.Success">Success</MudText>
+                    }
+                    else
+                    {
+                        <MudText Color="@Color.Error">
+                            <ValidationSummary />
+                        </MudText>
+                    }
+                </MudPaper>
+            </MudItem>
+            <MudItem xs="12">
+                <MudText Typo="Typo.body2" Align="Align.Center">
+                    Fill out the form correctly to save record.
+                </MudText>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
+}
+else
+{
+    <MudAlert class="mb-3" Severity="@StatusClass">@Message</MudAlert>
+    <MudLink Href="/classes">Back to List</MudLink>
+}

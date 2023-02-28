@@ -5,45 +5,45 @@ using MudBlazor;
 
 namespace StudentManagement.App.Pages
 {
-    public partial class Countries
+    public partial class Classes
     {
-        string Title = "Countries";
+        string Title = "Classes";
         string SearchString = "";
-        List<Country> CountryList = new List<Country>();
+        List<Class> ClassList = new List<Class>();
 
         int deleteId = 0;
         [Inject] protected IDialogService DialogService { get; set; }
 
         [Inject]
-        public ICountryDataService CountryDataService { get; set; }
+        public IClassDataService ClassDataService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            CountryList = (await CountryDataService.GetAllCountries()).ToList();
+            ClassList = (await ClassDataService.GetAllClasses()).ToList();
         }
 
-        public async Task OnDeleteClickAsync(int countryId)
+        public async Task OnDeleteClickAsync(int classId)
         {
             bool? result = await DialogService.ShowMessageBox("Warning",
                 "Deleting can not be undone!", yesText: "Delete!", cancelText: "Cancel");
 
-            deleteId = result == null ? 0 : countryId;
+            deleteId = result == null ? 0 : classId;
             if (deleteId == 0) return;
 
-            await CountryDataService.DeleteCountry(deleteId);
+            await ClassDataService.DeleteClass(deleteId);
 
-            var record = CountryList.FirstOrDefault(e => e.Id == deleteId);
+            var record = ClassList.FirstOrDefault(e => e.Id == deleteId);
             if (record != null)
-                CountryList.Remove(record);
+                ClassList.Remove(record);
         }
 
-        private bool FilterFunc1(Country element) => FilterFunc(element, SearchString);
+        private bool FilterFunc1(Class element) => FilterFunc(element, SearchString);
 
-        private bool FilterFunc(Country element, string searchString)
+        private bool FilterFunc(Class element, string searchString)
         {
             if (string.IsNullOrWhiteSpace(searchString))
                 return true;
-            if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            if (element.ClassName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
                 return true;
             return false;
         }

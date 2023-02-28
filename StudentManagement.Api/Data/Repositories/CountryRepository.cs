@@ -1,5 +1,4 @@
 ﻿using StudentManagement.Shared.Domain;
-using System.Diagnostics.Metrics;
 
 namespace StudentManagement.Api.Data.Repositories
 {

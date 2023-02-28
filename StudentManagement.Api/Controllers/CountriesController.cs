@@ -30,7 +30,6 @@ namespace StudentManagement.Api.Controllers
             return Ok(_countryRepository.GetCountryById(id));
         }
 
-
         [HttpPost]
         public IActionResult CreateCountry([FromBody] Country country)
         {
