@@ -2,7 +2,7 @@
 
 namespace StudentManagement.Shared.Domain
 {
-    public class Country
+    public class Country : AuditableEntity
     {
         public int Id { get; set; }
 

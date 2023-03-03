@@ -2,7 +2,7 @@
 
 namespace StudentManagement.Shared.Domain
 {
-    public class Student
+    public class Student : AuditableEntity
     {
         public int Id { get; set; }
 
