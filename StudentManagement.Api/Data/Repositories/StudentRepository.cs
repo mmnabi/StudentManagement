@@ -1,5 +1,5 @@
-﻿using StudentManagement.Shared.Domain;
-using System.Diagnostics.Metrics;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentManagement.Shared.Domain;
 
 namespace StudentManagement.Api.Data.Repositories
 {
@@ -14,7 +14,17 @@ namespace StudentManagement.Api.Data.Repositories
 
         public IEnumerable<Student> GetAllStudents()
         {
-            return _appDbContext.Students;
+            return _appDbContext.Students.AsNoTracking()
+                .Include(e => e.Class)
+                .Include(e => e.Country)
+                .Select(e => new Student
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    DateOfBirth = e.DateOfBirth,
+                    Country = new Country { Name = e.Country.Name },
+                    Class = new Class { ClassName = e.Class.ClassName },
+                });
         }
 
         public Student GetStudentById(int studentId)
@@ -55,6 +65,42 @@ namespace StudentManagement.Api.Data.Repositories
 
             _appDbContext.Students.Remove(foundStudent);
             _appDbContext.SaveChanges();
+        }
+
+        public Dictionary<string, int> GetStudentsPerClass()
+        {
+            var gResult = from a in _appDbContext.Students
+                          join b in _appDbContext.Classes on a.ClassId equals b.Id
+                          group a by b into g
+                          select new
+                          {
+                              Class = g.Key.ClassName,
+                              StudentCount = g.Count()
+                          };
+            var list = gResult.ToList();
+            return list.ToDictionary(e => e.Class, e => e.StudentCount);
+        }
+
+        public Dictionary<string, int> GetStudentsPerCountry()
+        {
+            var gResult = from a in _appDbContext.Students
+                          join b in _appDbContext.Countries on a.CountryId equals b.Id
+                          group a by b into g
+                          select new
+                          {
+                              Country = g.Key.Name,
+                              StudentCount = g.Count()
+                          };
+            var list = gResult.ToList();
+            return list.ToDictionary(e => e.Country, e => e.StudentCount);
+        }
+
+        public double GetStudentsAvgAge()
+        {
+            var list = _appDbContext.Students
+                .AsNoTracking()
+                .Select(e => e.DateOfBirth).ToList();
+            return list.Average(dt => (DateTime.Now - dt.GetValueOrDefault()).TotalDays);
         }
     }
 }

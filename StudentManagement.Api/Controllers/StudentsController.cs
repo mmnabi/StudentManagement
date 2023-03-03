@@ -35,7 +35,7 @@ namespace StudentManagement.Api.Controllers
 
             if (student.Name == string.Empty)
             {
-                ModelState.AddModelError("Name/", "The name shouldn't be empty");
+                ModelState.AddModelError("Name", "The name shouldn't be empty");
             }
 
             if (!ModelState.IsValid)
@@ -83,6 +83,30 @@ namespace StudentManagement.Api.Controllers
             _studentRepository.DeleteStudent(id);
 
             return NoContent();//success
+        }
+
+        [HttpGet("students-per-country")]
+        public IActionResult StudentsPerCountry()
+        {
+            var data = _studentRepository.GetStudentsPerCountry();
+
+            return Ok(data);//success
+        }
+
+        [HttpGet("students-per-class")]
+        public IActionResult StudentsPerClass()
+        {
+            var data = _studentRepository.GetStudentsPerClass();
+
+            return Ok(data);//success
+        }
+
+        [HttpGet("students-avg-age")]
+        public IActionResult StudentsAvgAge()
+        {
+            var data = _studentRepository.GetStudentsAvgAge();
+
+            return Ok(data);//success
         }
     }
 }

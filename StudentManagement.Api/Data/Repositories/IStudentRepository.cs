@@ -9,5 +9,8 @@ namespace StudentManagement.Api.Data.Repositories
         Student AddStudent(Student student);
         Student UpdateStudent(Student student);
         void DeleteStudent(int studentId);
+        Dictionary<string, int> GetStudentsPerClass();
+        Dictionary<string, int> GetStudentsPerCountry();
+        double GetStudentsAvgAge();
     }
 }

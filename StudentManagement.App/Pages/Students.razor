@@ -1,0 +1,52 @@
+﻿@page "/students"
+
+<PageTitle>@Title</PageTitle>
+
+<MudButton Href="/studentform" Variant="Variant.Filled" Color="Color.Primary">Add New Student</MudButton>
+
+@if (StudentList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <MudGrid Spacing="6" Class="mt-2">
+        <MudItem xs="12" sm="12">
+            <MudTable Items="@StudentList" Hover="true" Breakpoint="Breakpoint.Sm"
+                  LoadingProgressColor="Color.Info" Filter="new Func<Student,bool>(FilterFunc1)">
+                <ToolBarContent>
+                    <MudText Typo="Typo.h6">Students</MudText>
+                    <MudSpacer />
+                    <MudTextField @bind-Value="SearchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                </ToolBarContent>
+                <HeaderContent>
+                    <MudTh>Id</MudTh>
+                    <MudTh>Name</MudTh>
+                    <MudTh>DOB</MudTh>
+                    <MudTh>Country Name</MudTh>
+                    <MudTh>Class Name</MudTh>
+                    <MudTh>Edit</MudTh>
+                    <MudTh>Delete</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Id">@context.Id</MudTd>
+                    <MudTd DataLabel="Name">@context.Name</MudTd>
+                    <MudTd DataLabel="DOB">@context.DateOfBirth?.ToString("dd MMM yyyy")</MudTd>
+                    <MudTd DataLabel="Country Name">@context.Country.Name</MudTd>
+                    <MudTd DataLabel="Class Name">@context.Class.ClassName</MudTd>
+                    <MudTd DataLabel="Edit">
+                        <MudButton Href="@($"/studentform/{context.Id}")" Variant="Variant.Filled" 
+                                Size="Size.Small" Color="Color.Info">Edit</MudButton>
+                    </MudTd>
+                    <MudTd DataLabel="Delete">
+                        <MudButton Variant="Variant.Filled" Color="Color.Error" Size="Size.Small"
+                                  OnClick="@(() => OnDeleteClickAsync(context.Id))">Delete</MudButton>
+                    </MudTd>
+                </RowTemplate>
+                <PagerContent>
+                    <MudTablePager />
+                </PagerContent>
+            </MudTable>
+        </MudItem>
+    </MudGrid>
+}

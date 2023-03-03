@@ -4,17 +4,34 @@
 
 <MudGrid>
     <MudItem xs="12" sm="6">
-        <MudPaper Elevation="2" Class="pa-4" Style="height: 100%"></MudPaper>
-    </MudItem>
-    <MudItem xs="12" sm="6">
         <MudGrid>
             <MudItem xs="12">
-                <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+                <MudPaper Elevation="2" Class="pa-4">
+                    @if (ClassStudentCount.Any())
+                    {
+                        <MudText Typo="Typo.h6" Class="d-flex justify-center mb-2">Students Per Class</MudText>
+                        <MudChart ChartType="ChartType.Pie" InputData="@ClassStudentCount.ToArray()" InputLabels="@ClassStudentCountLabel.ToArray()" Width="300px" Height="300px" />
+                    }
+                </MudPaper>
             </MudItem>
             <MudItem xs="12">
-                <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+                <MudPaper Elevation="2" Class="pa-4">
+                    @if (CountryStudentCount.Any())
+                    {
+                        <MudText Typo="Typo.h6" Class="d-flex justify-center mb-2">Students Per Country</MudText>
+                        <MudChart ChartType="ChartType.Pie" InputData="@CountryStudentCount.ToArray()" InputLabels="@CountryStudentCountLabel.ToArray()" Width="300px" Height="300px" />
+                    }
+                </MudPaper>
             </MudItem>
         </MudGrid>
+    </MudItem>
+    <MudItem xs="12" sm="6">
+        <MudPaper Elevation="2" Class="pa-4" Style="height: 100%">
+            @if (AvgAge != null)
+            {
+                <MudText Typo="Typo.h6" Class="d-flex justify-center mb-2">Average Age Of Students: @((AvgAge.GetValueOrDefault()/365).ToString("N2")) Years</MudText>
+            }
+        </MudPaper>
     </MudItem>
     <MudItem xs="12" sm="6" md="4">
         <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>

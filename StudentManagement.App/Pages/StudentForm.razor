@@ -1,0 +1,70 @@
+﻿@page "/studentform"
+@page "/studentform/{Id}"
+@using System.ComponentModel.DataAnnotations
+
+<PageTitle>@Title</PageTitle>
+@if (!Saved)
+{
+    <EditForm Model="@Model" OnValidSubmit="OnValidSubmitAsync">
+        <DataAnnotationsValidator />
+        <MudGrid>
+            <MudItem xs="12" sm="7">
+                <MudCard>
+                    <MudCardHeader>
+                        <MudText Typo="Typo.h5">Student Info</MudText>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudTextField Label="Student Name" HelperText="Max. 255 characters"
+                                  @bind-Value="Model.Name" For="@(() => Model.Name)" />
+                        <MudDatePicker Label="Date Of Birth" MaxDate="DateTime.Now" @bind-Date="Model.DateOfBirth" For="@(() => Model.DateOfBirth)" />
+                        <MudSelect T="int" Label="Country" AnchorOrigin="Origin.BottomCenter"
+                                @bind-Value="Model.CountryId" For="@(() => Model.CountryId)" >
+                            @foreach(var country in CountryList)
+                            {
+                                <MudSelectItem T="int" Value="@(country.Id)">@country.Name</MudSelectItem>
+                            }
+                        </MudSelect>
+                        <MudSelect T="int" Label="Class" AnchorOrigin="Origin.BottomCenter"
+                               @bind-Value="Model.ClassId" For="@(() => Model.ClassId)">
+                            @foreach (var @class in ClassList)
+                            {
+                                <MudSelectItem T="int" Value="@(@class.Id)">@(@class.ClassName)</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled"
+                               Color="Color.Primary" Class="ml-auto">Save</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+            <MudItem xs="12" sm="5">
+                <MudPaper Class="pa-4 mud-height-full">
+                    <MudLink Href="/students">Back to List</MudLink>
+                    <MudText Typo="Typo.subtitle2">Validation Summary</MudText>
+                    @if (Saved)
+                    {
+                        <MudText Color="Color.Success">Success</MudText>
+                    }
+                    else
+                    {
+                        <MudText Color="@Color.Error">
+                            <ValidationSummary />
+                        </MudText>
+                        <MudAlert class="mb-3" hidden="@(string.IsNullOrEmpty(Message))" Severity="@StatusClass">@Message</MudAlert>
+                    }
+                </MudPaper>
+            </MudItem>
+            <MudItem xs="12">
+                <MudText Typo="Typo.body2" Align="Align.Center">
+                    Fill out the form correctly to save record.
+                </MudText>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
+}
+else
+{
+    <MudAlert class="mb-3" Severity="@StatusClass">@Message</MudAlert>
+    <MudLink Href="/students">Back to List</MudLink>
+}
